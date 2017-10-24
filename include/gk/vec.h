@@ -1,17 +1,16 @@
-#ifndef __GAMEKERNELCORE_VEC_H__
-#define __GAMEKERNELCORE_VEC_H__
+#pragma once
 
 #ifdef __cplusplus
-#  define GK_CXX_API GK_API
+#  define GK_CORE_CXX_API GK_CORE_API
 #  include <cstring>
 // Note: cmath seems to play poorly (i.e. "not compile") with other things,
 // at least on Windows
 #  include <math.h>
 #else
-#  define GK_CXX_API
+#  define GK_CORE_CXX_API
 #endif
 
-typedef struct GK_CXX_API gk_vec2 {
+typedef struct GK_CORE_CXX_API gk_vec2 {
     float x, y;
 
 #ifdef __cplusplus
@@ -70,7 +69,7 @@ typedef struct GK_CXX_API gk_vec2 {
 #endif
 } gk_vec2;
 
-typedef struct GK_CXX_API gk_vec3 {
+typedef struct GK_CORE_CXX_API gk_vec3 {
     float x, y, z;
 
 #ifdef __cplusplus
@@ -95,7 +94,7 @@ typedef struct GK_CXX_API gk_vec3 {
 #endif
 } gk_vec3;
 
-typedef struct GK_CXX_API gk_vec4 {
+typedef struct GK_CORE_CXX_API gk_vec4 {
     float x, y, z, w;
 
 #ifdef __cplusplus
@@ -122,7 +121,7 @@ typedef struct GK_CXX_API gk_vec4 {
 #endif
 } gk_vec4;
 
-typedef struct GK_CXX_API gk_mat4 {
+typedef struct GK_CORE_CXX_API gk_mat4 {
     float a00, a01, a02, a03;
     float a10, a11, a12, a13;
     float a20, a21, a22, a23;
@@ -168,5 +167,3 @@ namespace gk {
     template<typename T> struct base_type<T&&> { typedef T type; };
 }
 #endif // __cplusplus
-
-#endif  /* __GAMEKERNELCORE_VEC_H__ */
