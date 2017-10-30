@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-#  define GK_CORE_CXX_API GK_CORE_API
+#  define GK_CORE_CXX_API
 #  include <cstring>
 // Note: cmath seems to play poorly (i.e. "not compile") with other things,
 // at least on Windows
@@ -129,7 +129,7 @@ typedef struct GK_CORE_CXX_API gk_mat4 {
 
 #ifdef __cplusplus
     gk_mat4() = default;
-    constexpr gk_mat4(int) 
+    constexpr gk_mat4(int)
         : a00(1), a01(0), a02(0), a03(0)
         , a10(0), a11(1), a12(0), a13(0)
         , a20(0), a21(0), a22(1), a23(0)
