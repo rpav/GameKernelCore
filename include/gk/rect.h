@@ -27,6 +27,11 @@ typedef struct gk_rect {
     gk_rect& operator=(const gk_rect &r) { pos = r.pos; size = r.size; return *this; }
 
     inline gk::vec2 v1abs() const { return gk::vec2(pos.x + size.x, pos.y + size.y); }
+
+    bool contains(const gk_vec2 &p) const {
+        return (pos.x <= p.x) && (pos.y <= p.y) &&
+               (pos.x+size.x > p.x) && (pos.y+size.y > p.y);
+    }
 #endif // __cplusplus
 } gk_rect;
 
