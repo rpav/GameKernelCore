@@ -36,6 +36,9 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
     void set(float x, float y);
     void set(float*);
 
+    inline bool operator==(const gk_vec2 &v) const { return (x == v.x && y == v.y); }
+    inline bool operator!=(const gk_vec2 &v) const { return !(*this == v); }
+
     // Note: These are simple but not terribly efficient
 
     // Requires a normalized vector
