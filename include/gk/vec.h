@@ -168,5 +168,9 @@ namespace gk {
     template<typename T> struct base_type<T*> { typedef T type; };
     template<typename T> struct base_type<T&> { typedef T type; };
     template<typename T> struct base_type<T&&> { typedef T type; };
+
+    inline gk::vec2 lerp(gk::vec2 v0, gk::vec2 v1, float a) {
+        return (v0 * (1 - a)) + (v1 * a);
+    }
 }
 #endif // __cplusplus
