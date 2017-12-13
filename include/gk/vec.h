@@ -80,13 +80,13 @@ typedef struct GK_CORE_CXX_API gk_vec3 {
     gk_vec3(int) { x = 0; y = 0; z = 0; }
     gk_vec3(float x_, float y_, float z_) { x = x_; y = y_; z = z_; }
 
-    gk_vec3 operator+(const gk_vec3 &v) { return gk_vec3(x + v.x, y + v.y, z + v.z); }
+    gk_vec3 operator+(const gk_vec3 &v) const { return gk_vec3(x + v.x, y + v.y, z + v.z); }
     gk_vec3& operator+=(const gk_vec3 &v) {
         x += v.x; y += v.y; z += v.z;
         return *this;
     }
 
-    gk_vec3 operator-(const gk_vec3 &v) { return gk_vec3(x - v.x, y - v.y, z - v.z); }
+    gk_vec3 operator-(const gk_vec3 &v) const { return gk_vec3(x - v.x, y - v.y, z - v.z); }
     gk_vec3& operator-=(const gk_vec3 &v) {
         x -= v.x; y -= v.y; z -= v.z;
         return *this;
@@ -107,13 +107,13 @@ typedef struct GK_CORE_CXX_API gk_vec4 {
         x = x_; y = y_; z = z_; w = w_;
     }
 
-    gk_vec4 operator+(const gk_vec4 &v) { return gk_vec4(x + v.x, y + v.y, z + v.z, w + v.w); }
+    gk_vec4 operator+(const gk_vec4 &v) const { return gk_vec4(x + v.x, y + v.y, z + v.z, w + v.w); }
     gk_vec4& operator+=(const gk_vec4 &v) {
         x += v.x; y += v.y; z += v.z; w += v.w;
         return *this;
     }
 
-    gk_vec4 operator-(const gk_vec4 &v) { return gk_vec4(x - v.x, y - v.y, z - v.z, w - v.w); }
+    gk_vec4 operator-(const gk_vec4 &v) const { return gk_vec4(x - v.x, y - v.y, z - v.z, w - v.w); }
     gk_vec4& operator-=(const gk_vec4 &v) {
         x -= v.x; y -= v.y; z -= v.z; w -= v.w;
         return *this;
