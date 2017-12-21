@@ -19,6 +19,8 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
     gk_vec2(float x_, float y_) : x(x_), y(y_) { }
     gk_vec2(const gk_vec2 &v) { x = v.x; y = v.y; }
 
+    gk_vec2 operator-() const { return gk_vec2(-x, -y); }
+
     gk_vec2 operator+(const gk_vec2 &v) const { return gk_vec2(x + v.x, y + v.y); }
     gk_vec2& operator+=(const gk_vec2 &v) { x += v.x; y += v.y; return *this; }
 
@@ -27,6 +29,9 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
 
     gk_vec2 operator*(float f) const { return gk_vec2(x * f, y * f); }
     gk_vec2& operator*=(float f) { x *= f; y *= f; return *this; }
+
+    gk_vec2 operator*(const gk_vec2 &v) const { return gk_vec2(x*v.x, y*v.y); }
+    gk_vec2& operator*=(const gk_vec2 &v) { x *= v.x; y *= v.y; return *this; }
 
     gk_vec2 operator/(float f) const { return gk_vec2(x / f, y / f); }
     gk_vec2& operator/=(float f) { x /= f; y /= f; return *this; }
@@ -68,6 +73,10 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
         y = _y;
 
         return *this;
+    }
+
+    float dot(const gk_vec2 &v) const {
+        return (x*v.x) + (y*v.y);
     }
 #endif
 } gk_vec2;
