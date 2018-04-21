@@ -32,6 +32,24 @@ typedef struct gk_rect {
         return (pos.x <= p.x) && (pos.y <= p.y) &&
                (pos.x+size.x > p.x) && (pos.y+size.y > p.y);
     }
+
+    gk_rect& floor() {
+        pos.floor();
+        size.floor();
+        return *this;
+    }
+
+    gk_rect& ceil() {
+        pos.ceil();
+        size.ceil();
+        return *this;
+    }
+
+    gk_rect& trunc() {
+        pos.trunc();
+        size.trunc();
+        return *this;
+    }
 #endif // __cplusplus
 } gk_rect;
 

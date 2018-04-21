@@ -3,9 +3,7 @@
 #ifdef __cplusplus
 #  define GK_CORE_CXX_API
 #  include <cstring>
-// Note: cmath seems to play poorly (i.e. "not compile") with other things,
-// at least on Windows
-#  include <math.h>
+#  include <cmath>
 #else
 #  define GK_CORE_CXX_API
 #endif
@@ -78,6 +76,25 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
     float dot(const gk_vec2 &v) const {
         return (x*v.x) + (y*v.y);
     }
+
+    gk_vec2& floor() {
+        x = std::floor(x);
+        y = std::floor(y);
+        return *this;
+    }
+
+    gk_vec2& ceil() {
+        x = std::ceil(x);
+        y = std::ceil(y);
+        return *this;
+    }
+
+    gk_vec2& trunc() {
+        x = std::trunc(x);
+        y = std::trunc(y);
+        return *this;
+    }
+
 #endif
 } gk_vec2;
 
