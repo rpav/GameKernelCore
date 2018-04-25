@@ -13,39 +13,48 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
 
 #ifdef __cplusplus
     gk_vec2() = default;
-    gk_vec2(int) { x = 0; y = 0; }
+    gk_vec2(const gk_vec2& v) = default;
+
+    explicit gk_vec2(int) { x = 0; y = 0; }
     gk_vec2(float x_, float y_) : x(x_), y(y_) { }
-    gk_vec2(const gk_vec2 &v) { x = v.x; y = v.y; }
 
     gk_vec2 operator-() const { return gk_vec2(-x, -y); }
 
-    gk_vec2 operator+(const gk_vec2 &v) const { return gk_vec2(x + v.x, y + v.y); }
-    gk_vec2& operator+=(const gk_vec2 &v) { x += v.x; y += v.y; return *this; }
+    gk_vec2 operator+(gk_vec2 v) const { return gk_vec2(x + v.x, y + v.y); }
+    gk_vec2& operator+=(gk_vec2 v) { x += v.x; y += v.y; return *this; }
 
-    gk_vec2 operator-(const gk_vec2 &v) const { return gk_vec2(x - v.x, y - v.y); }
-    gk_vec2& operator-=(const gk_vec2 &v) { x -= v.x; y -= v.y; return *this; }
+    gk_vec2 operator-(gk_vec2 v) const { return gk_vec2(x - v.x, y - v.y); }
+    gk_vec2& operator-=(gk_vec2 v) { x -= v.x; y -= v.y; return *this; }
+
+
+    gk_vec2 operator+(float f) const { return gk_vec2(x + f, y + f); }
+    gk_vec2& operator+=(float f) { x += f; y += f; return *this; }
+
+    gk_vec2 operator-(float f) const { return gk_vec2(x - f, y - f); }
+    gk_vec2& operator-=(float f) { x -= f; y -= f; return *this; }
+
 
     gk_vec2 operator*(float f) const { return gk_vec2(x * f, y * f); }
     gk_vec2& operator*=(float f) { x *= f; y *= f; return *this; }
 
-    gk_vec2 operator*(const gk_vec2 &v) const { return gk_vec2(x*v.x, y*v.y); }
-    gk_vec2& operator*=(const gk_vec2 &v) { x *= v.x; y *= v.y; return *this; }
+    gk_vec2 operator*(gk_vec2 v) const { return gk_vec2(x*v.x, y*v.y); }
+    gk_vec2& operator*=(gk_vec2 v) { x *= v.x; y *= v.y; return *this; }
 
     gk_vec2 operator/(float f) const { return gk_vec2(x / f, y / f); }
     gk_vec2& operator/=(float f) { x /= f; y /= f; return *this; }
 
-    gk_vec2& operator=(const gk_vec2 &v) { x = v.x; y = v.y; return *this; }
+    gk_vec2& operator=(gk_vec2 v) { x = v.x; y = v.y; return *this; }
 
     void set(float x, float y);
     void set(float*);
 
-    inline bool operator==(const gk_vec2 &v) const { return (x == v.x && y == v.y); }
-    inline bool operator!=(const gk_vec2 &v) const { return !(*this == v); }
+    inline bool operator==(gk_vec2 v) const { return (x == v.x && y == v.y); }
+    inline bool operator!=(gk_vec2 v) const { return !(*this == v); }
 
     // Note: These are simple but not terribly efficient
 
     // Requires a normalized vector
-    float angle(const gk_vec2 &v) const { return atan2(v.y, v.x) - atan2(y, x); }
+    float angle(gk_vec2 v) const { return atan2(v.y, v.x) - atan2(y, x); }
 
     float length() const {
         return sqrt((x*x) + (y*y));
@@ -73,7 +82,7 @@ typedef struct GK_CORE_CXX_API gk_vec2 {
         return *this;
     }
 
-    float dot(const gk_vec2 &v) const {
+    float dot(gk_vec2 v) const {
         return (x*v.x) + (y*v.y);
     }
 
