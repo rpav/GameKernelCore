@@ -14,3 +14,12 @@
 
 #include "gk/vec.h"
 #include "gk/rect.h"
+
+namespace gk {
+
+template<typename T>
+inline T lerp(T v0, T v1, float a) {
+    return (v0 * (1 - a)) + (v1 * a);
+}
+
+}
