@@ -43,6 +43,9 @@ struct GK_CORE_CXX_API tvec2 {
     tvec2 operator/(float f) const { return tvec2(x / f, y / f); }
     tvec2& operator/=(float f) { x /= f; y /= f; return *this; }
 
+    tvec2 operator/(tvec2 v) const { return tvec2(x/v.x, y/v.y); }
+    tvec2& operator/=(tvec2 v) const { x /= v.x; y /= v.y; return *this; }
+
     tvec2& operator=(tvec2 v) { x = v.x; y = v.y; return *this; }
 
     void set(T x, T y);
