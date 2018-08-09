@@ -3,7 +3,7 @@
 #define GK_CORE_CXX_API
 #include <cstring>
 #include <cmath>
-#include <gk/vec.h>
+#include <type_traits>
 
 namespace gk {
 
@@ -48,8 +48,8 @@ struct GK_CORE_CXX_API tvec2 {
 
     tvec2& operator=(tvec2 v) { x = v.x; y = v.y; return *this; }
 
-    void set(T x, T y);
-    void set(T*);
+    void set(T x_, T y_) { x = x_; y = y_; }
+    void set(T* f) { x = f[0]; y = f[1]; }
 
     inline bool operator==(tvec2 v) const { return (x == v.x && y == v.y); }
     inline bool operator!=(tvec2 v) const { return !(*this == v); }
@@ -73,8 +73,8 @@ struct GK_CORE_CXX_API tvec2 {
     }
 
     tvec2& rotate(F radians) {
-        F c = std::cos<F>(radians);
-        F s = std::sin<F>(radians);
+        F c = std::cos(radians);
+        F s = std::sin(radians);
 
         F _x = x*c - y*s;
         F _y = x*s + y*c;
@@ -141,14 +141,6 @@ struct GK_CORE_CXX_API vec4 {
         x = x_; y = y_; z = z_; w = w_;
     }
 
-    vec4(gk_vec4 v) { std::memcpy(this, &v, sizeof(vec4)); }
-
-    operator gk_vec4() const {
-        gk_vec4 v;
-        std::memcpy(&v, this, sizeof(vec4));
-        return v;
-    }
-
     vec4 operator+(const vec4 &v) const { return vec4(x + v.x, y + v.y, z + v.z, w + v.w); }
     vec4& operator+=(const vec4 &v) {
         x += v.x; y += v.y; z += v.z; w += v.w;
@@ -177,14 +169,8 @@ struct GK_CORE_CXX_API mat4 {
 
     constexpr mat4() = default;
 
-    mat4(const gk_mat4 &m) {
+    mat4(const mat4 &m) {
         std::memcpy(this, &m, sizeof(mat4));
-    }
-
-    operator gk_mat4() const {
-        gk_mat4 m;
-        std::memcpy(&m, this, sizeof(mat4));
-        return m;
     }
 
     void set(float *f) {
@@ -205,7 +191,7 @@ struct GK_CORE_CXX_API mat4 {
 };
 
 #if defined(GK_GLM_CONVERSIONS)
-static_assert(sizeof(glm::mat4) == sizeof(mat4))
+static_assert(sizeof(glm::mat4) == sizeof(mat4));
 #endif
 
 constexpr mat4 IDENTITY;
@@ -217,3 +203,8 @@ static_assert(std::is_standard_layout_v<vec4>);
 static_assert(std::is_standard_layout_v<mat4>);
 
 } // namespace gk
+
+using gk_vec2 = gk::vec2;
+using gk_vec3 = gk::vec3;
+using gk_vec4 = gk::vec4;
+using gk_mat4 = gk::mat4;

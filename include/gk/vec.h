@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+    #error "For C++, use gk/vec.hpp instead of gk/vec.h, or gk/core.hpp instead of gk/core.h"
+#endif
+
 typedef struct gk_vec2 {
     float x, y;
 } gk_vec2;
