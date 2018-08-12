@@ -1,8 +1,8 @@
 #pragma once
 
 #define GK_CORE_CXX_API
-#include <cstring>
 #include <cmath>
+#include <cstring>
 #include <type_traits>
 
 namespace gk {
@@ -10,156 +10,221 @@ namespace gk {
 template<typename T, typename F>
 struct GK_CORE_CXX_API tvec2 {
     using element_type = T;
-    using float_type = F;
+    using float_type   = F;
 
     T x{0}, y{0};
 
-    tvec2() = default;
-    tvec2(const tvec2& v) = default;
-    tvec2(T x_, T y_) : x(x_), y(y_) { }
+    constexpr tvec2()               = default;
+    constexpr tvec2(const tvec2& v) = default;
+    constexpr tvec2(T x_, T y_) : x(x_), y(y_) {}
 
-    tvec2 operator-() const { return tvec2(-x, -y); }
+    constexpr tvec2 operator-() const { return tvec2(-x, -y); }
 
-    tvec2 operator+(tvec2 v) const { return tvec2(x + v.x, y + v.y); }
-    tvec2& operator+=(tvec2 v) { x += v.x; y += v.y; return *this; }
+    constexpr tvec2 operator+(tvec2 v) const { return tvec2(x + v.x, y + v.y); }
+    constexpr tvec2 operator-(tvec2 v) const { return tvec2(x - v.x, y - v.y); }
+    constexpr tvec2 operator+(float f) const { return tvec2(x + f, y + f); }
+    constexpr tvec2 operator-(float f) const { return tvec2(x - f, y - f); }
+    constexpr tvec2 operator*(float f) const { return tvec2(x * f, y * f); }
+    constexpr tvec2 operator*(tvec2 v) const { return tvec2(x * v.x, y * v.y); }
+    constexpr tvec2 operator/(float f) const { return tvec2(x / f, y / f); }
+    constexpr tvec2 operator/(tvec2 v) const { return tvec2(x / v.x, y / v.y); }
 
-    tvec2 operator-(tvec2 v) const { return tvec2(x - v.x, y - v.y); }
-    tvec2& operator-=(tvec2 v) { x -= v.x; y -= v.y; return *this; }
+    constexpr inline bool operator==(tvec2 v) const { return (x == v.x && y == v.y); }
+    constexpr inline bool operator!=(tvec2 v) const { return !(*this == v); }
 
+    tvec2& operator+=(tvec2 v)
+    {
+        x += v.x;
+        y += v.y;
+        return *this;
+    }
 
-    tvec2 operator+(float f) const { return tvec2(x + f, y + f); }
-    tvec2& operator+=(float f) { x += f; y += f; return *this; }
+    tvec2& operator-=(tvec2 v)
+    {
+        x -= v.x;
+        y -= v.y;
+        return *this;
+    }
 
-    tvec2 operator-(float f) const { return tvec2(x - f, y - f); }
-    tvec2& operator-=(float f) { x -= f; y -= f; return *this; }
+    tvec2& operator+=(float f)
+    {
+        x += f;
+        y += f;
+        return *this;
+    }
 
+    tvec2& operator-=(float f)
+    {
+        x -= f;
+        y -= f;
+        return *this;
+    }
 
-    tvec2 operator*(float f) const { return tvec2(x * f, y * f); }
-    tvec2& operator*=(float f) { x *= f; y *= f; return *this; }
+    tvec2& operator*=(float f)
+    {
+        x *= f;
+        y *= f;
+        return *this;
+    }
 
-    tvec2 operator*(tvec2 v) const { return tvec2(x*v.x, y*v.y); }
-    tvec2& operator*=(tvec2 v) { x *= v.x; y *= v.y; return *this; }
+    tvec2& operator*=(tvec2 v)
+    {
+        x *= v.x;
+        y *= v.y;
+        return *this;
+    }
 
-    tvec2 operator/(float f) const { return tvec2(x / f, y / f); }
-    tvec2& operator/=(float f) { x /= f; y /= f; return *this; }
+    tvec2& operator/=(float f)
+    {
+        x /= f;
+        y /= f;
+        return *this;
+    }
 
-    tvec2 operator/(tvec2 v) const { return tvec2(x/v.x, y/v.y); }
-    tvec2& operator/=(tvec2 v) const { x /= v.x; y /= v.y; return *this; }
+    tvec2& operator/=(tvec2 v) const
+    {
+        x /= v.x;
+        y /= v.y;
+        return *this;
+    }
 
-    tvec2& operator=(tvec2 v) { x = v.x; y = v.y; return *this; }
+    tvec2& operator=(tvec2 v)
+    {
+        x = v.x;
+        y = v.y;
+        return *this;
+    }
 
-    void set(T x_, T y_) { x = x_; y = y_; }
-    void set(T* f) { x = f[0]; y = f[1]; }
-
-    inline bool operator==(tvec2 v) const { return (x == v.x && y == v.y); }
-    inline bool operator!=(tvec2 v) const { return !(*this == v); }
+    void set(T* f)
+    {
+        x = f[0];
+        y = f[1];
+    }
 
     // Note: These are simple but not terribly efficient
 
     // Requires a normalized vector
-    F angle(tvec2 v) const { return std::atan2<F>(v.y, v.x) - std::atan2<F>(y, x); }
+    constexpr F angle(tvec2 v) const { return std::atan2(v.y, v.x) - std::atan2(y, x); }
+    constexpr F length() const { return std::sqrt((x * x) + (y * y)); }
 
-    F length() const {
-        return std::sqrt<F>((x*x) + (y*y));
-    }
-
-    tvec2& normalize() {
+    constexpr tvec2 normalize()
+    {
         F scale = F(1.0) / length();
-
-        x *= scale;
-        y *= scale;
-
-        return *this;
+        return tvec2{x * scale, y * scale};
     }
 
-    tvec2& rotate(F radians) {
+    constexpr tvec2 rotate(F radians) const
+    {
         F c = std::cos(radians);
         F s = std::sin(radians);
-
-        F _x = x*c - y*s;
-        F _y = x*s + y*c;
-
-        x = _x;
-        y = _y;
-
-        return *this;
+        return tvec2{x * c - y * s, x * s + y * c};
     }
 
-    F dot(tvec2 v) const {
-        return (x*v.x) + (y*v.y);
-    }
-
-    tvec2& floor() {
-        x = std::floor(x);
-        y = std::floor(y);
-        return *this;
-    }
-
-    tvec2& ceil() {
-        x = std::ceil(x);
-        y = std::ceil(y);
-        return *this;
-    }
-
-    tvec2& trunc() {
-        x = std::trunc(x);
-        y = std::trunc(y);
-        return *this;
-    }
+    constexpr F     dot(tvec2 v) const { return (x * v.x) + (y * v.y); }
+    constexpr tvec2 floor() const { return {std::floor(x), std::floor(y)}; }
+    constexpr tvec2 ceil() const { return {std::ceil(x), std::ceil(y)}; }
+    constexpr tvec2 trunc() const { return {std::trunc(x), std::trunc(y)}; }
 };
 
-using vec2 = tvec2<float,float>;
+using vec2    = tvec2<float, float>;
 using i16vec2 = tvec2<int16_t, float>;
 
-struct GK_CORE_CXX_API vec3 {
-    float x{0}, y{0}, z{0};
+template<typename T, typename F>
+struct GK_CORE_CXX_API tvec3 {
+    T x{0}, y{0}, z{0};
 
-    vec3() = default;
-    vec3(float x_, float y_, float z_) { x = x_; y = y_; z = z_; }
+    constexpr tvec3() = default;
+    constexpr tvec3(T x, T y, T z) : x(x), y(y), z(z) {}
 
-    vec3 operator+(const vec3 &v) const { return vec3(x + v.x, y + v.y, z + v.z); }
-    vec3& operator+=(const vec3 &v) {
-        x += v.x; y += v.y; z += v.z;
+    constexpr tvec3 operator+(tvec3 v) const { return tvec3(x + v.x, y + v.y, z + v.z); }
+
+    tvec3& operator+=(tvec3 v)
+    {
+        x += v.x;
+        y += v.y;
+        z += v.z;
         return *this;
     }
 
-    vec3 operator-(const vec3 &v) const { return vec3(x - v.x, y - v.y, z - v.z); }
-    vec3& operator-=(const vec3 &v) {
-        x -= v.x; y -= v.y; z -= v.z;
+    constexpr tvec3 operator-(tvec3 v) const { return tvec3(x - v.x, y - v.y, z - v.z); }
+
+    tvec3& operator-=(tvec3 v)
+    {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
         return *this;
     }
 
-    void set(float x_, float y_, float z_) { x = x_; y = y_; z = z_; }
-    void set(float *f) { x = f[0]; y = f[1]; z = f[2]; }
+    constexpr F length() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
+
+    constexpr tvec3 normalize() const
+    {
+
+        const F scale = F(1.0) / length();
+        tvec3   out{x * scale, y * scale, z * scale};
+        return out;
+    }
+
+    void set(const T* f)
+    {
+        x = f[0];
+        y = f[1];
+        z = f[2];
+    }
 };
 
-struct GK_CORE_CXX_API vec4 {
-    float x{0}, y{0}, z{0}, w{0};
+using vec3 = tvec3<float, float>;
 
-    vec4() = default;
-    vec4(float x_, float y_, float z_, float w_) {
-        x = x_; y = y_; z = z_; w = w_;
+template<typename T, typename F>
+struct GK_CORE_CXX_API tvec4 {
+    T x{0}, y{0}, z{0}, w{0};
+
+    constexpr tvec4() = default;
+    constexpr tvec4(T x_, T y_, T z_, T w_)
+    {
+        x = x_;
+        y = y_;
+        z = z_;
+        w = w_;
     }
 
-    vec4 operator+(const vec4 &v) const { return vec4(x + v.x, y + v.y, z + v.z, w + v.w); }
-    vec4& operator+=(const vec4 &v) {
-        x += v.x; y += v.y; z += v.z; w += v.w;
+    constexpr tvec4 operator+(tvec4 v) const
+    {
+        return tvec4(x + v.x, y + v.y, z + v.z, w + v.w);
+    }
+    tvec4& operator+=(tvec4 v)
+    {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+        w += v.w;
         return *this;
     }
 
-    vec4 operator-(const vec4 &v) const { return vec4(x - v.x, y - v.y, z - v.z, w - v.w); }
-    vec4& operator-=(const vec4 &v) {
-        x -= v.x; y -= v.y; z -= v.z; w -= v.w;
+    constexpr tvec4 operator-(tvec4 v) const
+    {
+        return tvec4(x - v.x, y - v.y, z - v.z, w - v.w);
+    }
+    tvec4& operator-=(tvec4 v)
+    {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
+        w -= v.w;
         return *this;
     }
 
-    void set(float x_, float y_, float z_, float w_) {
-        x = x_; y = y_; z = z_; w = w_;
-    }
-    void set(float *f) {
-        x = f[0]; y = f[1]; z = f[2]; w = f[3];
+    void set(const T* f)
+    {
+        x = f[0];
+        y = f[1];
+        z = f[2];
+        w = f[3];
     }
 };
+
+using vec4 = tvec4<float, float>;
 
 struct GK_CORE_CXX_API mat4 {
     float a00{1}, a01{0}, a02{0}, a03{0};
@@ -169,33 +234,129 @@ struct GK_CORE_CXX_API mat4 {
 
     constexpr mat4() = default;
 
-    mat4(const mat4 &m) {
-        std::memcpy(this, &m, sizeof(mat4));
+    constexpr mat4(const mat4& m)
+    {
+        a00 = m.a00;
+        a01 = m.a01;
+        a02 = m.a02;
+        a03 = m.a03;
+        a10 = m.a10;
+        a11 = m.a11;
+        a02 = m.a12;
+        a03 = m.a13;
+        a20 = m.a20;
+        a21 = m.a21;
+        a02 = m.a22;
+        a03 = m.a23;
+        a30 = m.a30;
+        a31 = m.a31;
+        a02 = m.a32;
+        a03 = m.a33;
+    }
+    void set(const float* f) { std::memcpy(this, f, sizeof(*this)); }
+
+    constexpr vec4 operator*(vec4 v) const
+    {
+        vec4 out;
+        out.x = (a00 * v.x) + (a01 * v.y) + (a02 * v.z) + (a03 * v.w);
+        out.y = (a10 * v.x) + (a11 * v.y) + (a12 * v.z) + (a13 * v.w);
+        out.z = (a20 * v.x) + (a21 * v.y) + (a22 * v.z) + (a23 * v.w);
+        out.w = (a30 * v.x) + (a31 * v.y) + (a32 * v.z) + (a33 * v.w);
+        return out;
     }
 
-    void set(float *f) {
-        a00 = f[0]; a01 = f[1]; a02 = f[2]; a03 = f[3];
-        a10 = f[4]; a11 = f[5]; a12 = f[6]; a13 = f[7];
-        a20 = f[8]; a21 = f[9]; a22 = f[10]; a23 = f[11];
-        a30 = f[12]; a31 = f[13]; a32 = f[14]; a33 = f[15];
+    constexpr mat4 operator*(const mat4& m) const
+    {
+        mat4 out;
+        out.a00 = (a00 * m.a00) + (a01 * m.a10) + (a02 * m.a20) + (a03 * m.a30);
+        out.a01 = (a00 * m.a01) + (a01 * m.a11) + (a02 * m.a21) + (a03 * m.a31);
+        out.a02 = (a00 * m.a02) + (a01 * m.a12) + (a02 * m.a22) + (a03 * m.a32);
+        out.a03 = (a00 * m.a03) + (a01 * m.a13) + (a02 * m.a23) + (a03 * m.a33);
+
+        out.a10 = (a10 * m.a00) + (a11 * m.a10) + (a12 * m.a20) + (a13 * m.a30);
+        out.a11 = (a10 * m.a01) + (a11 * m.a11) + (a12 * m.a21) + (a13 * m.a31);
+        out.a12 = (a10 * m.a02) + (a11 * m.a12) + (a12 * m.a22) + (a13 * m.a32);
+        out.a13 = (a10 * m.a03) + (a11 * m.a13) + (a12 * m.a23) + (a13 * m.a33);
+
+        out.a20 = (a20 * m.a00) + (a21 * m.a10) + (a22 * m.a20) + (a23 * m.a30);
+        out.a21 = (a20 * m.a01) + (a21 * m.a11) + (a22 * m.a21) + (a23 * m.a31);
+        out.a22 = (a20 * m.a02) + (a21 * m.a12) + (a22 * m.a22) + (a23 * m.a32);
+        out.a23 = (a20 * m.a03) + (a21 * m.a13) + (a22 * m.a23) + (a23 * m.a33);
+
+        out.a30 = (a30 * m.a00) + (a31 * m.a10) + (a32 * m.a20) + (a33 * m.a30);
+        out.a31 = (a30 * m.a01) + (a31 * m.a11) + (a32 * m.a21) + (a33 * m.a31);
+        out.a32 = (a30 * m.a02) + (a31 * m.a12) + (a32 * m.a22) + (a33 * m.a32);
+        out.a33 = (a30 * m.a03) + (a31 * m.a13) + (a32 * m.a23) + (a33 * m.a33);
+
+        return out;
     }
 
-#if defined(GK_GLM_CONVERSIONS)
-    mat4(const glm::mat4 &m) { std::memcpy(this, &m, sizeof(*this)); }
-    operator glm::mat4() const {
-        glm::mat4 m;
-        std::memcpy(&m, this, sizeof(mat4));
-        return m;
+    constexpr static mat4 translate(vec3 t)
+    {
+        mat4 out;
+        out.a03 = t.x;
+        out.a13 = t.y;
+        out.a23 = t.z;
+        return out;
     }
-#endif
+
+    // This *assumes* a normalized vec3
+    constexpr static mat4 rotate(float angle, vec3 axis)
+    {
+        mat4       out;
+        const auto cos = std::cos(angle);
+        const auto sin = std::sin(angle);
+        const auto x   = axis.x;
+        const auto y   = axis.y;
+        const auto z   = axis.z;
+
+        out.a00 = cos + (x * x) * (1 - cos);
+        out.a01 = (x * y) * (1 - cos) - z * sin;
+        out.a02 = (x * z) * (1 - cos) + y * sin;
+        out.a10 = (x * y) * (1 - cos) + z * sin;
+        out.a11 = cos + (y * y) * (1 - cos);
+        out.a12 = (y * z) * (1 - cos) - x * sin;
+        out.a20 = (z * x) * (1 - cos) - y * sin;
+        out.a21 = (z * y) * (1 - cos) + x * sin;
+        out.a22 = cos + (z * z) * (1 - cos);
+
+        return out;
+    }
+
+    constexpr static mat4 scale(vec3 s)
+    {
+        mat4 out;
+        out.a00 = s.x;
+        out.a11 = s.y;
+        out.a22 = s.z;
+        return out;
+    }
+
+    constexpr static mat4 ortho(float left,
+                                float right,
+                                float bottom,
+                                float top,
+                                float near,
+                                float far)
+    {
+        mat4 out;
+        out.a00 = 2 / (right - left);
+        out.a11 = 2 / (top - bottom);
+        out.a22 = -2 / (far - near);
+
+        out.a03 = -(right + left) / (right - left);
+        out.a13 = -(top + bottom) / (top - bottom);
+        out.a23 = -(far + near) / (far - near);
+        return out;
+    }
+
+    constexpr gk::vec4 row0() const { return {a00, a01, a02, a03}; }
+    constexpr gk::vec4 row1() const { return {a10, a11, a12, a13}; }
+    constexpr gk::vec4 row2() const { return {a20, a21, a22, a23}; }
+    constexpr gk::vec4 row3() const { return {a30, a31, a32, a33}; }
 };
 
-#if defined(GK_GLM_CONVERSIONS)
-static_assert(sizeof(glm::mat4) == sizeof(mat4));
-#endif
-
 constexpr mat4 IDENTITY;
-
 
 static_assert(std::is_standard_layout_v<vec2>);
 static_assert(std::is_standard_layout_v<vec3>);
