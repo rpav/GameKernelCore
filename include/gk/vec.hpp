@@ -88,13 +88,6 @@ struct GK_CORE_CXX_API tvec2 {
         return *this;
     }
 
-    tvec2& operator=(tvec2 v)
-    {
-        x = v.x;
-        y = v.y;
-        return *this;
-    }
-
     void set(T* f)
     {
         x = f[0];
