@@ -1,6 +1,7 @@
 #pragma once
 
-#include "gk/vec.hpp"
+#include <rpav/convert.hpp>
+#include <gk/vec.hpp>
 
 namespace gk {
 
@@ -38,6 +39,10 @@ struct GK_CORE_CXX_API trect {
     constexpr trect floor() const { return trect{pos.floor(), size.floor()}; }
     constexpr trect ceil() const { return trect{pos.ceil(), size.ceil()}; }
     constexpr trect trunc() const { return trect{pos.trunc(), size.trunc() }; }
+
+    // You can define conversions to other types via conv_adl<>
+    template<typename To>
+    explicit operator To() const { return rpav::conv_adl<trect,To>::convert(*this); }
 };
 
 using rect = trect<float,float>;

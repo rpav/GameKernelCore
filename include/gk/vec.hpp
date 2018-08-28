@@ -5,6 +5,8 @@
 #include <cstring>
 #include <type_traits>
 
+#include <rpav/convert.hpp>
+
 namespace gk {
 
 template<typename T, typename F>
@@ -117,6 +119,10 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr tvec2 floor() const { return {std::floor(x), std::floor(y)}; }
     constexpr tvec2 ceil() const { return {std::ceil(x), std::ceil(y)}; }
     constexpr tvec2 trunc() const { return {std::trunc(x), std::trunc(y)}; }
+
+    // You can define conversions to other types via conv_adl<>
+    template<typename To>
+    explicit operator To() const { return rpav::conv_adl<tvec2,To>::convert(*this); }
 };
 
 using vec2    = tvec2<float, float>;
@@ -165,6 +171,10 @@ struct GK_CORE_CXX_API tvec3 {
         y = f[1];
         z = f[2];
     }
+
+    // You can define conversions to other types via conv_adl<>
+    template<typename To>
+    explicit operator To() const { return rpav::conv_adl<tvec3,To>::convert(*this); }
 };
 
 using vec3 = tvec3<float, float>;
@@ -215,6 +225,11 @@ struct GK_CORE_CXX_API tvec4 {
         z = f[2];
         w = f[3];
     }
+
+
+    // You can define conversions to other types via conv_adl<>
+    template<typename To>
+    explicit operator To() const { return rpav::conv_adl<tvec4,To>::convert(*this); }
 };
 
 using vec4 = tvec4<float, float>;
@@ -347,6 +362,11 @@ struct GK_CORE_CXX_API mat4 {
     constexpr gk::vec4 row1() const { return {a10, a11, a12, a13}; }
     constexpr gk::vec4 row2() const { return {a20, a21, a22, a23}; }
     constexpr gk::vec4 row3() const { return {a30, a31, a32, a33}; }
+
+
+    // You can define conversions to other types via conv_adl<>
+    template<typename To>
+    explicit operator To() const { return rpav::conv_adl<mat4,To>::convert(*this); }
 };
 
 constexpr mat4 IDENTITY;
