@@ -5,9 +5,14 @@
 #include <cstring>
 #include <type_traits>
 
+#include <rpav/math.hpp>
 #include <rpav/convert.hpp>
 
 namespace gk {
+
+namespace detail { using namespace rpav; }
+
+using namespace detail;
 
 template<typename T, typename F>
 struct GK_CORE_CXX_API tvec2 {
@@ -97,9 +102,15 @@ struct GK_CORE_CXX_API tvec2 {
     }
 
     // Note: These are simple but not terribly efficient
+    // Assume radians.
+
+    static constexpr tvec2 fromAngle(F a) {
+        return {std::cos(a), std::sin(a)};
+    }
 
     // Requires a normalized vector
-    constexpr F angle(tvec2 v) const { return std::atan2(v.y, v.x) - std::atan2(y, x); }
+    constexpr F angle() const { return std::atan2(-y,-x) + math::K<F>::pi; }
+    constexpr F angle(tvec2 v) const { return v.angle() - angle(); }
     constexpr F length() const { return std::sqrt((x * x) + (y * y)); }
 
     constexpr tvec2 normalize()
@@ -116,6 +127,7 @@ struct GK_CORE_CXX_API tvec2 {
     }
 
     constexpr F     dot(tvec2 v) const { return (x * v.x) + (y * v.y); }
+    constexpr tvec2 abs() const { return {std::abs(x), std::abs(y)}; }
     constexpr tvec2 floor() const { return {std::floor(x), std::floor(y)}; }
     constexpr tvec2 ceil() const { return {std::ceil(x), std::ceil(y)}; }
     constexpr tvec2 trunc() const { return {std::trunc(x), std::trunc(y)}; }
