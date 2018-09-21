@@ -111,6 +111,8 @@ struct GK_CORE_CXX_API tvec2 {
     // Requires a normalized vector
     constexpr F angle() const { return std::atan2(-y,-x) + math::K<F>::pi; }
     constexpr F angle(tvec2 v) const { return v.angle() - angle(); }
+    constexpr F anglePi() const { return angle() / math::K<F>::pi; }
+    constexpr F anglePi(tvec2 v) const { return angle(v) / math::K<F>::pi; }
     constexpr F length() const { return std::sqrt((x * x) + (y * y)); }
 
     constexpr tvec2 normalize()
