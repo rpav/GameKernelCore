@@ -3,6 +3,7 @@
 #define GK_CORE_CXX_API
 #include <cmath>
 #include <cstring>
+#include <cstdint>
 #include <type_traits>
 
 #include <rpav/math.hpp>
@@ -323,7 +324,7 @@ struct GK_CORE_CXX_API mat4 {
     }
 
     // This *assumes* a normalized vec3
-    constexpr static mat4 rotate(float angle, vec3 axis)
+    static mat4 rotate(float angle, vec3 axis)
     {
         mat4       out;
         const auto cos = std::cos(angle);
