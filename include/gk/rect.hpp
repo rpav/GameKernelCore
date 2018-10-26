@@ -29,6 +29,10 @@ struct GK_CORE_CXX_API trect {
     template<typename U, typename V>
     constexpr trect operator-(const tvec2<U,V> &v) const { return trect{pos - v, size}; }
 
+    constexpr trect operator*(const F f) const {
+        return trect{pos * f, size * f};
+    }
+
     constexpr inline vec2 v1abs() const { return vec2(pos.x + size.x, pos.y + size.y); }
 
     constexpr bool contains(vec2 p) const {
