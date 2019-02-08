@@ -150,6 +150,10 @@ struct GK_CORE_CXX_API tvec3 {
     constexpr tvec3() = default;
     constexpr tvec3(T x, T y, T z) : x(x), y(y), z(z) {}
 
+    constexpr tvec3(tvec2<T,F> v2, T z = T{})
+        : x(v2.x), y(v2.y), z(z)
+    { }
+
     constexpr tvec3 operator+(tvec3 v) const { return tvec3(x + v.x, y + v.y, z + v.z); }
 
     tvec3& operator+=(tvec3 v)
