@@ -2,16 +2,18 @@
 
 #define GK_CORE_CXX_API
 #include <cmath>
-#include <cstring>
 #include <cstdint>
+#include <cstring>
 #include <type_traits>
 
-#include <rpav/math.hpp>
 #include <rpav/convert.hpp>
+#include <rpav/math.hpp>
 
 namespace gk {
 
-namespace detail { using namespace rpav; }
+namespace detail {
+using namespace rpav;
+}
 
 using namespace detail;
 
@@ -24,7 +26,11 @@ struct GK_CORE_CXX_API tvec2 {
 
     constexpr tvec2()               = default;
     constexpr tvec2(const tvec2& v) = default;
+    constexpr tvec2(tvec2&&)        = default;
     constexpr tvec2(T x_, T y_) : x(x_), y(y_) {}
+
+    tvec2& operator=(const tvec2&) = default;
+    tvec2& operator=(tvec2&&) = default;
 
     constexpr tvec2 operator-() const { return tvec2(-x, -y); }
 
@@ -105,12 +111,10 @@ struct GK_CORE_CXX_API tvec2 {
     // Note: These are simple but not terribly efficient
     // Assume radians.
 
-    static constexpr tvec2 fromAngle(F a) {
-        return {std::cos(a), std::sin(a)};
-    }
+    static constexpr tvec2 fromAngle(F a) { return {std::cos(a), std::sin(a)}; }
 
     // Requires a normalized vector
-    constexpr F angle() const { return std::atan2(-y,-x) + math::K<F>::pi; }
+    constexpr F angle() const { return std::atan2(-y, -x) + math::K<F>::pi; }
     constexpr F angle(tvec2 v) const { return v.angle() - angle(); }
     constexpr F anglePi() const { return angle() / math::K<F>::pi; }
     constexpr F anglePi(tvec2 v) const { return angle(v) / math::K<F>::pi; }
@@ -137,7 +141,10 @@ struct GK_CORE_CXX_API tvec2 {
 
     // You can define conversions to other types via conv_adl<>
     template<typename To>
-    explicit operator To() const { return rpav::conv_adl<tvec2,To>::convert(*this); }
+    explicit operator To() const
+    {
+        return rpav::conv_adl<tvec2, To>::convert(*this);
+    }
 };
 
 using vec2    = tvec2<float, float>;
@@ -150,9 +157,7 @@ struct GK_CORE_CXX_API tvec3 {
     constexpr tvec3() = default;
     constexpr tvec3(T x, T y, T z) : x(x), y(y), z(z) {}
 
-    constexpr tvec3(tvec2<T,F> v2, T z = T{})
-        : x(v2.x), y(v2.y), z(z)
-    { }
+    constexpr tvec3(tvec2<T, F> v2, T z = T{}) : x(v2.x), y(v2.y), z(z) {}
 
     constexpr tvec3 operator+(tvec3 v) const { return tvec3(x + v.x, y + v.y, z + v.z); }
 
@@ -193,7 +198,10 @@ struct GK_CORE_CXX_API tvec3 {
 
     // You can define conversions to other types via conv_adl<>
     template<typename To>
-    explicit operator To() const { return rpav::conv_adl<tvec3,To>::convert(*this); }
+    explicit operator To() const
+    {
+        return rpav::conv_adl<tvec3, To>::convert(*this);
+    }
 };
 
 using vec3 = tvec3<float, float>;
@@ -211,11 +219,8 @@ struct GK_CORE_CXX_API tvec4 {
         w = w_;
     }
 
-    constexpr tvec4 operator+(tvec4 v) const
-    {
-        return tvec4(x + v.x, y + v.y, z + v.z, w + v.w);
-    }
-    tvec4& operator+=(tvec4 v)
+    constexpr tvec4 operator+(tvec4 v) const { return tvec4(x + v.x, y + v.y, z + v.z, w + v.w); }
+    tvec4&          operator+=(tvec4 v)
     {
         x += v.x;
         y += v.y;
@@ -224,11 +229,8 @@ struct GK_CORE_CXX_API tvec4 {
         return *this;
     }
 
-    constexpr tvec4 operator-(tvec4 v) const
-    {
-        return tvec4(x - v.x, y - v.y, z - v.z, w - v.w);
-    }
-    tvec4& operator-=(tvec4 v)
+    constexpr tvec4 operator-(tvec4 v) const { return tvec4(x - v.x, y - v.y, z - v.z, w - v.w); }
+    tvec4&          operator-=(tvec4 v)
     {
         x -= v.x;
         y -= v.y;
@@ -245,10 +247,12 @@ struct GK_CORE_CXX_API tvec4 {
         w = f[3];
     }
 
-
     // You can define conversions to other types via conv_adl<>
     template<typename To>
-    explicit operator To() const { return rpav::conv_adl<tvec4,To>::convert(*this); }
+    explicit operator To() const
+    {
+        return rpav::conv_adl<tvec4, To>::convert(*this);
+    }
 };
 
 using vec4 = tvec4<float, float>;
@@ -259,7 +263,7 @@ struct GK_CORE_CXX_API mat4 {
     float a20{0}, a21{0}, a22{1}, a23{0};
     float a30{0}, a31{0}, a32{0}, a33{1};
 
-    constexpr mat4() = default;
+    constexpr mat4()              = default;
     constexpr mat4(const mat4& m) = default;
 
     void set(const float* f) { std::memcpy(this, f, sizeof(*this)); }
@@ -341,12 +345,7 @@ struct GK_CORE_CXX_API mat4 {
         return out;
     }
 
-    constexpr static mat4 ortho(float left,
-                                float right,
-                                float bottom,
-                                float top,
-                                float near,
-                                float far)
+    constexpr static mat4 ortho(float left, float right, float bottom, float top, float near, float far)
     {
         mat4 out;
         out.a00 = 2 / (right - left);
@@ -364,10 +363,12 @@ struct GK_CORE_CXX_API mat4 {
     constexpr gk::vec4 row2() const { return {a20, a21, a22, a23}; }
     constexpr gk::vec4 row3() const { return {a30, a31, a32, a33}; }
 
-
     // You can define conversions to other types via conv_adl<>
     template<typename To>
-    explicit operator To() const { return rpav::conv_adl<mat4,To>::convert(*this); }
+    explicit operator To() const
+    {
+        return rpav::conv_adl<mat4, To>::convert(*this);
+    }
 };
 
 constexpr mat4 IDENTITY;

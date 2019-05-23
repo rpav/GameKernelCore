@@ -13,15 +13,17 @@ struct GK_CORE_CXX_API trect {
     vec2 size;
 
     constexpr trect() = default;
-    constexpr trect(const trect &r) { pos = r.pos; size = r.size; }
+    constexpr trect(const trect &) = default;
     constexpr trect(T x, T y, T w, T h)
         : pos(x, y), size(w, h) {
     }
     constexpr trect(const vec2 &pos_, const vec2 &size_)
         : pos(pos_), size(size_) {
     }
+    constexpr trect(trect&&) = default;
 
-    trect& operator=(const trect &r) { pos = r.pos; size = r.size; return *this; }
+    trect& operator=(const trect &) = default;
+    trect& operator=(trect&&) = default;
 
     template<typename U, typename V>
     constexpr trect operator+(const tvec2<U,V> &v) const { return trect{pos + v, size}; }
