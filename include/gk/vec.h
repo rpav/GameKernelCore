@@ -8,6 +8,10 @@ typedef struct gk_vec2 {
     float x, y;
 } gk_vec2;
 
+typedef struct gk_ivec2 {
+    int32_t x, y;
+} gk_ivec2;
+
 typedef struct gk_vec3 {
     float x, y, z;
 } gk_vec3;
@@ -22,4 +26,3 @@ typedef struct gk_mat4 {
     float a20, a21, a22, a23;
     float a30, a31, a32, a33;
 } gk_mat4;
-

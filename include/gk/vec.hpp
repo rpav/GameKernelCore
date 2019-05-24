@@ -155,6 +155,8 @@ struct GK_CORE_CXX_API tvec2 {
 
 using vec2    = tvec2<float, float>;
 using i16vec2 = tvec2<int16_t, float>;
+using ivec2   = tvec2<int32_t, float>;
+using i64vec2 = tvec2<int64_t, double>;
 
 template<typename T, typename F>
 struct GK_CORE_CXX_API tvec3 {
@@ -390,3 +392,5 @@ using gk_vec2 = gk::vec2;
 using gk_vec3 = gk::vec3;
 using gk_vec4 = gk::vec4;
 using gk_mat4 = gk::mat4;
+
+using gk_ivec2 = gk::ivec2;
