@@ -22,7 +22,7 @@ struct GK_CORE_CXX_API tvec2 {
     using element_type = T;
     using float_type   = F;
 
-    T x{0}, y{0};
+    T x{}, y{};
 
     constexpr tvec2()               = default;
     constexpr tvec2(const tvec2& v) = default;
@@ -45,6 +45,12 @@ struct GK_CORE_CXX_API tvec2 {
 
     constexpr inline bool operator==(tvec2 v) const { return (x == v.x && y == v.y); }
     constexpr inline bool operator!=(tvec2 v) const { return !(*this == v); }
+
+    // Note vec2s are only partially ordered
+    constexpr inline bool operator<(tvec2 v) const { return (x < v.x) && (y < v.y); }
+    constexpr inline bool operator<=(tvec2 v) const { return (x <= v.x) && (y <= v.y); }
+    constexpr inline bool operator>(tvec2 v) const { return (x > v.x) && (y > v.y); }
+    constexpr inline bool operator>=(tvec2 v) const { return (x >= v.x) && (y >= v.y); }
 
     tvec2& operator+=(tvec2 v)
     {
