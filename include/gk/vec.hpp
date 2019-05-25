@@ -29,6 +29,11 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr tvec2(tvec2&&)        = default;
     constexpr tvec2(T x_, T y_) : x(x_), y(y_) {}
 
+    template<typename S, typename G>
+    explicit constexpr tvec2(tvec2<S, G> v)
+        : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
+    {}
+
     tvec2& operator=(const tvec2&) = default;
     tvec2& operator=(tvec2&&) = default;
 
@@ -36,11 +41,11 @@ struct GK_CORE_CXX_API tvec2 {
 
     constexpr tvec2 operator+(tvec2 v) const { return tvec2(x + v.x, y + v.y); }
     constexpr tvec2 operator-(tvec2 v) const { return tvec2(x - v.x, y - v.y); }
-    constexpr tvec2 operator+(float f) const { return tvec2(x + f, y + f); }
-    constexpr tvec2 operator-(float f) const { return tvec2(x - f, y - f); }
-    constexpr tvec2 operator*(float f) const { return tvec2(x * f, y * f); }
+    constexpr tvec2 operator+(float_type f) const { return tvec2(x + f, y + f); }
+    constexpr tvec2 operator-(float_type f) const { return tvec2(x - f, y - f); }
+    constexpr tvec2 operator*(float_type f) const { return tvec2(x * f, y * f); }
     constexpr tvec2 operator*(tvec2 v) const { return tvec2(x * v.x, y * v.y); }
-    constexpr tvec2 operator/(float f) const { return tvec2(x / f, y / f); }
+    constexpr tvec2 operator/(float_type f) const { return tvec2(x / f, y / f); }
     constexpr tvec2 operator/(tvec2 v) const { return tvec2(x / v.x, y / v.y); }
 
     constexpr inline bool operator==(tvec2 v) const { return (x == v.x && y == v.y); }
@@ -66,21 +71,21 @@ struct GK_CORE_CXX_API tvec2 {
         return *this;
     }
 
-    tvec2& operator+=(float f)
+    tvec2& operator+=(float_type f)
     {
         x += f;
         y += f;
         return *this;
     }
 
-    tvec2& operator-=(float f)
+    tvec2& operator-=(float_type f)
     {
         x -= f;
         y -= f;
         return *this;
     }
 
-    tvec2& operator*=(float f)
+    tvec2& operator*=(float_type f)
     {
         x *= f;
         y *= f;
@@ -94,7 +99,7 @@ struct GK_CORE_CXX_API tvec2 {
         return *this;
     }
 
-    tvec2& operator/=(float f)
+    tvec2& operator/=(float_type f)
     {
         x /= f;
         y /= f;
@@ -160,7 +165,10 @@ using i64vec2 = tvec2<int64_t, double>;
 
 template<typename T, typename F>
 struct GK_CORE_CXX_API tvec3 {
-    T x{0}, y{0}, z{0};
+    using element_type = T;
+    using float_type   = F;
+
+    T x{}, y{}, z{};
 
     constexpr tvec3() = default;
     constexpr tvec3(T x, T y, T z) : x(x), y(y), z(z) {}
@@ -168,6 +176,8 @@ struct GK_CORE_CXX_API tvec3 {
     constexpr tvec3(tvec2<T, F> v2, T z = T{}) : x(v2.x), y(v2.y), z(z) {}
 
     constexpr tvec3 operator+(tvec3 v) const { return tvec3(x + v.x, y + v.y, z + v.z); }
+    constexpr tvec3 operator*(tvec3 v) const { return tvec3(x * v.x, y * v.y, z * v.z); }
+    constexpr tvec3 operator*(float_type f) const { return tvec3(x * f, y * f, z * f); }
 
     tvec3& operator+=(tvec3 v)
     {
@@ -191,7 +201,6 @@ struct GK_CORE_CXX_API tvec3 {
 
     constexpr tvec3 normalize() const
     {
-
         const F scale = F(1.0) / length();
         tvec3   out{x * scale, y * scale, z * scale};
         return out;
