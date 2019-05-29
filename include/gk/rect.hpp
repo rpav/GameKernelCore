@@ -51,6 +51,17 @@ struct GK_CORE_CXX_API trect {
         return (r.pos < (pos+size)) && ((r.pos+r.size) > pos);
     }
 
+    // The smallest rect that contains this rect and r
+    constexpr trect combine(const trect& r) const
+    {
+        auto minx = std::min(pos.x, r.pos.x);
+        auto miny = std::min(pos.y, r.pos.y);
+        auto maxx = std::max(pos.x + size.x, r.pos.x + r.size.x);
+        auto maxy = std::max(pos.y + size.y, r.pos.y + r.size.y);
+
+        return {minx, miny, maxx-minx, maxy-miny};
+    }
+
     constexpr trect floor() const { return trect{pos.floor(), size.floor()}; }
     constexpr trect ceil() const { return trect{pos.ceil(), size.ceil()}; }
     constexpr trect trunc() const { return trect{pos.trunc(), size.trunc()}; }
