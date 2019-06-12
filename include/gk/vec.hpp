@@ -130,6 +130,7 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr F anglePi() const { return angle() / math::K<F>::pi; }
     constexpr F anglePi(tvec2 v) const { return angle(v) / math::K<F>::pi; }
     constexpr F length() const { return std::sqrt((x * x) + (y * y)); }
+    constexpr F lengthSq() const { return (x*x) + (y*y); }
 
     constexpr tvec2 normalize()
     {
