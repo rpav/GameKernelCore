@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include <gk/vec.hpp>
 #include <rpav/convert.hpp>
 
