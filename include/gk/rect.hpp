@@ -68,6 +68,10 @@ struct GK_CORE_CXX_API trect {
     constexpr trect ceil() const { return trect{pos.ceil(), size.ceil()}; }
     constexpr trect trunc() const { return trect{pos.trunc(), size.trunc()}; }
 
+    constexpr vec2 center() const {
+        return {pos.x + (size.x / 2), pos.y + (size.y / 2)};
+    }
+
     // You can define conversions to other types via conv_adl<>
     template<typename To>
     explicit operator To() const
