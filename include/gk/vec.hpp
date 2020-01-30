@@ -157,6 +157,9 @@ struct GK_CORE_CXX_API tvec2 {
     {
         return rpav::conv_adl<tvec2, To>::convert(*this);
     }
+
+    // This is apparently useful
+    explicit constexpr operator bool() const { return x || y; }
 };
 
 using vec2    = tvec2<float, float>;
