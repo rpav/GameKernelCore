@@ -19,7 +19,8 @@ namespace gk {
 
 template<typename T>
 inline T lerp(T v0, T v1, float a) {
-    return (v0 * (1 - a)) + (v1 * a);
+    //return (v0 == v1) ? T(v0) : T((v0 * (1 - a)) + (v1 * a));
+    return v0 + ((v1 - v0) * a);
 }
 
 }

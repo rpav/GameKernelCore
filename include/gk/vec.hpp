@@ -150,6 +150,7 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr tvec2 floor() const { return {std::floor(x), std::floor(y)}; }
     constexpr tvec2 ceil() const { return {std::ceil(x), std::ceil(y)}; }
     constexpr tvec2 trunc() const { return {std::trunc(x), std::trunc(y)}; }
+    constexpr tvec2 round() const { return {std::round(x), std::round(y)}; }
 
     // You can define conversions to other types via conv_adl<>
     template<typename To>
