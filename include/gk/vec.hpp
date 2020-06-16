@@ -30,8 +30,7 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr tvec2(T x_, T y_) : x(x_), y(y_) {}
 
     template<typename S, typename G>
-    explicit constexpr tvec2(tvec2<S, G> v)
-        : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
+    explicit constexpr tvec2(tvec2<S, G> v) : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
     {}
 
     tvec2& operator=(const tvec2&) = default;
@@ -130,7 +129,7 @@ struct GK_CORE_CXX_API tvec2 {
     constexpr F anglePi() const { return angle() / math::K<F>::pi; }
     constexpr F anglePi(tvec2 v) const { return angle(v) / math::K<F>::pi; }
     constexpr F length() const { return std::sqrt((x * x) + (y * y)); }
-    constexpr F lengthSq() const { return (x*x) + (y*y); }
+    constexpr F lengthSq() const { return (x * x) + (y * y); }
 
     constexpr tvec2 normalize()
     {
@@ -233,13 +232,9 @@ struct GK_CORE_CXX_API tvec4 {
     T x{0}, y{0}, z{0}, w{0};
 
     constexpr tvec4() = default;
-    constexpr tvec4(T x_, T y_, T z_, T w_)
-    {
-        x = x_;
-        y = y_;
-        z = z_;
-        w = w_;
-    }
+    constexpr tvec4(T x_, T y_, T z_, T w_) : x(x_), y(y_), z(z_), w(w_) {}
+    constexpr tvec4(tvec2<T, F> v2, T z_, T w_) : x(v2.x), y(v2.y), z(z_), w(w_) {}
+    constexpr tvec4(tvec3<T, F> v3, T w_) : x(v3.x), y(v3.y), z(v3.z), w(w_) {}
 
     constexpr tvec4 operator+(tvec4 v) const { return tvec4(x + v.x, y + v.y, z + v.z, w + v.w); }
     tvec4&          operator+=(tvec4 v)

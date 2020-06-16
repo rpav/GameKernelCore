@@ -10,6 +10,7 @@ namespace gk {
 template<typename T, typename F>
 struct GK_CORE_CXX_API trect {
     using vec2 = tvec2<T, F>;
+    using vec4 = tvec4<T, F>;
 
     vec2 pos;
     vec2 size;
@@ -37,21 +38,22 @@ struct GK_CORE_CXX_API trect {
 
     constexpr trect operator*(const F f) const { return trect{pos * f, size * f}; }
 
+    constexpr trect operator*(const mat4& m) const
+    {
+        auto newPos  = m * vec4(pos, 0, 1);
+        auto newSize = m * vec4(size, 0, 0);
+        return {{newPos.x, newPos.y}, {newSize.x, newSize.y}};
+    }
+
     constexpr inline vec2 v1abs() const { return vec2(pos.x + size.x, pos.y + size.y); }
 
     // rects are half-open
     constexpr bool contains(vec2 p) const { return (pos <= p) && ((pos + size) > p); }
 
     // a rect contains itself
-    constexpr bool contains(const trect& r) const
-    {
-        return contains(pos) && ((r.size + (r.pos - pos)) <= size);
-    }
+    constexpr bool contains(const trect& r) const { return contains(pos) && ((r.size + (r.pos - pos)) <= size); }
 
-    constexpr bool overlap(const trect& r) const
-    {
-        return (r.pos < (pos+size)) && ((r.pos+r.size) > pos);
-    }
+    constexpr bool overlap(const trect& r) const { return (r.pos < (pos + size)) && ((r.pos + r.size) > pos); }
 
     // The smallest rect that contains this rect and r
     constexpr trect combine(const trect& r) const
@@ -61,16 +63,14 @@ struct GK_CORE_CXX_API trect {
         auto maxx = std::max(pos.x + size.x, r.pos.x + r.size.x);
         auto maxy = std::max(pos.y + size.y, r.pos.y + r.size.y);
 
-        return {minx, miny, maxx-minx, maxy-miny};
+        return {minx, miny, maxx - minx, maxy - miny};
     }
 
     constexpr trect floor() const { return trect{pos.floor(), size.floor()}; }
     constexpr trect ceil() const { return trect{pos.ceil(), size.ceil()}; }
     constexpr trect trunc() const { return trect{pos.trunc(), size.trunc()}; }
 
-    constexpr vec2 center() const {
-        return {pos.x + (size.x / 2), pos.y + (size.y / 2)};
-    }
+    constexpr vec2 center() const { return {pos.x + (size.x / 2), pos.y + (size.y / 2)}; }
 
     // You can define conversions to other types via conv_adl<>
     template<typename To>
