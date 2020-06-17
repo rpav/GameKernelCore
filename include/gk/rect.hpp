@@ -81,8 +81,13 @@ struct GK_CORE_CXX_API trect {
 };
 
 using rect    = trect<float, float>;
+using irect   = trect<int32_t, float>;
 using i16rect = trect<int16_t, float>;
 
 static_assert(std::is_standard_layout_v<rect>);
 
 } // namespace gk
+
+using gk_rect    = gk::rect;
+using gk_irect   = gk::irect;
+using gk_i16rect = gk::i16rect;
