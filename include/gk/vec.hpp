@@ -144,6 +144,11 @@ struct GK_CORE_CXX_API tvec2 {
         return tvec2{x * c - y * s, x * s + y * c};
     }
 
+    constexpr tvec2 rotatePi(F pirads) const
+    {
+        return rotate(pirads * math::K<F>::pi);
+    }
+
     constexpr F     dot(tvec2 v) const { return (x * v.x) + (y * v.y); }
     constexpr tvec2 abs() const { return {std::abs(x), std::abs(y)}; }
     constexpr tvec2 floor() const { return {std::floor(x), std::floor(y)}; }
