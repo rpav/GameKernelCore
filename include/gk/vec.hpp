@@ -17,6 +17,10 @@ using namespace rpav;
 
 using namespace detail;
 
+template<typename T, typename F> struct GK_CORE_CXX_API tvec2;
+template<typename T, typename F> struct GK_CORE_CXX_API tvec3;
+template<typename T, typename F> struct GK_CORE_CXX_API tvec4;
+
 template<typename T, typename F>
 struct GK_CORE_CXX_API tvec2 {
     using element_type = T;
@@ -31,6 +35,14 @@ struct GK_CORE_CXX_API tvec2 {
 
     template<typename S, typename G>
     explicit constexpr tvec2(tvec2<S, G> v) : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
+    {}
+
+    template<typename S, typename G>
+    explicit constexpr tvec2(tvec3<S, G> v) : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
+    {}
+
+    template<typename S, typename G>
+    explicit constexpr tvec2(tvec4<S, G> v) : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}
     {}
 
     tvec2& operator=(const tvec2&) = default;
@@ -183,6 +195,10 @@ struct GK_CORE_CXX_API tvec3 {
     constexpr tvec3(T x, T y, T z) : x(x), y(y), z(z) {}
 
     constexpr tvec3(tvec2<T, F> v2, T z = T{}) : x(v2.x), y(v2.y), z(z) {}
+
+    template<typename S, typename G>
+    explicit constexpr tvec3(tvec4<S, G> v) : x{static_cast<element_type>(v.x)}, y{static_cast<element_type>(v.y)}, z{static_cast<element_type>(v.z)}
+    {}
 
     constexpr tvec3 operator+(tvec3 v) const { return tvec3(x + v.x, y + v.y, z + v.z); }
     constexpr tvec3 operator*(tvec3 v) const { return tvec3(x * v.x, y * v.y, z * v.z); }
