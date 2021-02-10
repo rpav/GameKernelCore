@@ -21,6 +21,9 @@ struct GK_CORE_CXX_API trect {
     constexpr trect(const vec2& pos_, const vec2& size_) : pos(pos_), size(size_) {}
     constexpr trect(trect&&) = default;
 
+    template<typename S, typename G>
+    explicit constexpr trect(trect<S, G> r) : pos(static_cast<vec2>(r.pos)), size(static_cast<vec2>(r.size)) {}
+
     trect& operator=(const trect&) = default;
     trect& operator=(trect&&) = default;
 
